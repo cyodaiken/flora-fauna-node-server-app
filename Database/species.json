@@ -1,0 +1,38 @@
+[
+{
+    "species_name": "Rainbow Cheetah",
+    "scientific_name": "Felis iridescens",
+    "classification": {
+      "kingdom": "Animalia",
+      "phylum": "Chordata",
+      "class": "Mammalia",
+      "order": "Carnivora",
+      "family": "Felidae",
+      "genus": "Acinonyx"
+    },
+    "habitat": "Grasslands and savannas",
+    "range": "Southern Africa",
+    "diet": "Carnivorous",
+    "average_lifespan": "10-12 years in the wild",
+    "physical_description": {
+      "size": "Approximately 3 feet tall at the shoulder",
+      "weight": "120-140 pounds",
+      "coloration": "Golden with iridescent rainbow spots",
+      "notable_features": "Exceptional speed and agility"
+    },
+    "conservation_status": "Endangered",
+    "population_trend": "Decreasing",
+    "threats": [
+      "Habitat loss due to agriculture",
+      "Poaching for fur and body parts"
+    ],
+    "interesting_facts": [
+      "The Rainbow Cheetah is known for its unique iridescent spots that shimmer like a rainbow.",
+      "It is one of the fastest land animals, capable of reaching speeds up to 70 miles per hour.",
+      "Their population is declining due to habitat destruction and illegal hunting."
+    ]
+  }
+]
+
+
+ 
