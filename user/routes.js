@@ -6,7 +6,7 @@ function userRoutes(app) {
     const users = Database.users;
     res.json(users);
   });
-  // getting new user.
+  // getting one user.
   app.get("/project/users/:id", async (req, res) => {
     const id = req.params.id;
     const user = Database.users.find((user) => user.user_id === id);
