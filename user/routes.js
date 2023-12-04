@@ -1,36 +1,57 @@
-import Database from "../Database/index.js";
+import * as dao from "./dao.js";
 
 function userRoutes(app) {
   // populating all user
-  app.get("/project/users", async (req, res) => {
-    const users = Database.users;
-    res.json(users);
-  });
-  // getting one user.
-  app.get("/project/users/:id", async (req, res) => {
-    const id = req.params.id;
-    const user = Database.users.find((user) => user.user_id === id);
+  const findAllUser = async (req, res) => {
+    const user = await dao.findAllUsersDao();
     res.json(user);
-  });
+  };
+  app.get("/project/users", findAllUser);
+
+  //find single user by id
+  const findUserbyId = async (req, res) => {
+    const id = req.params.id;
+    const user = await dao.findUserByIdDao(id);
+    res.json(user);
+  };
+  app.get("/project/users/:id", findUserbyId);
+
   // deleting user
-  app.delete("/project/users/:id", async (req, res) => {
-    const id = req.params.id;
-    const user = Database.users.find((user) => user.user_id === id);
-    const index = Database.users.indexOf(user);
-    Database.users.splice(index, 1);
-    res.json(user);
-  });
-  // posting new user
-  app.post("/project/users", async (req, res) => {
+  const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    const status = await dao.deleteUserDao(id);
+    res.json(status); // returning the status of the delete operation
+  };
+  app.delete("/project/users/:id", deleteUser);
+
+  const createUser = async (req, res) => {
     const newUser = {
-      user_id: req.body.user_id,
+      user_id: user_id,
+      password: req.body.password,
+      role: req.body.role,
+      profile_pic: req.body.profile_pic,
       created_at: new Date().toString(),
       ...req.body,
     };
+    const createdUser = await dao.createUserDao(newUser);
+    res.json(createdUser);
+  };
+  app.post("/project/users", createUser);
 
-    Database.users.unshift(newUser);
-    res.json(newUser);
-  });
+  const updateUser = async (req, res) => {
+    const id = req.params.id;
+    const newUser = req.body;
+    const user = await dao.updateSingleUserDao(id, newUser);
+    res.json(user);
+  };
+
+  /*   WIP: Apurva 
+  1. signin
+  2. signup
+  3. signout
+  4. account 
+
+  */
 }
 
 export default userRoutes;
