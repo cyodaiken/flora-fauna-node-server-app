@@ -45,6 +45,17 @@ function userRoutes(app) {
     res.json(user);
   };
 
+  const account = async (req, res) => {
+    // when signin, we can get the current user.
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(403);
+      return;
+    }
+    res.json(currentUser);
+  };
+  app.post("/project/users/account", account);
+
   /*   WIP: Apurva 
   1. signin
   2. signup
