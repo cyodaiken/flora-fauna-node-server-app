@@ -27,7 +27,7 @@ const app = express();
 
 app.use(
   cors({
-    credentials: true, //    cookie
+    // credentials: true, //    cookie
     // origin: FRONTEND_URL, // this needs to be replaced if we are deploying frontend and backend separately. set to localhost.
   })
 );
