@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./user/routes.js";
-import oberveDetailRoute from "./observation/routes.js";
 import exploreRoutes from "./explore/routes.js";
 // import mongodb from "mongoose";
 // mongodb.connect("mongodb://localhost:27017/project");
@@ -50,6 +49,5 @@ app.use(
 // app.use(express.json()); // for parsing application/json
 userRoutes(app);
 exploreRoutes(app);
-oberveDetailRoute(app);
 
 app.listen(400);
