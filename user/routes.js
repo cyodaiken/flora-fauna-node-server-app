@@ -11,7 +11,7 @@ function userRoutes(app) {
   //find single user by id
   const findUserbyId = async (req, res) => {
     const id = req.params.id;
-    const user = await dao.findUserByIdDao(id);
+    const user = await dao.findUserByIdDao(parseInt(id));
     res.json(user);
   };
   app.get("/project/users/:id", findUserbyId);
@@ -19,7 +19,7 @@ function userRoutes(app) {
   // deleting user
   const deleteUser = async (req, res) => {
     const { id } = req.params;
-    const status = await dao.deleteUserDao(id);
+    const status = await dao.deleteUserDao(parseInt(id));
     res.json(status); // returning the status of the delete operation
   };
   app.delete("/project/users/:id", deleteUser);
@@ -41,7 +41,7 @@ function userRoutes(app) {
   const updateUser = async (req, res) => {
     const id = req.params.id;
     const newUser = req.body;
-    const user = await dao.updateSingleUserDao(id, newUser);
+    const user = await dao.updateSingleUserDao(parseInt(id), newUser);
     res.json(user);
   };
 
