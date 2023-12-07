@@ -5,6 +5,7 @@ import userRoutes from "./user/routes.js";
 import exploreRoutes from "./explore/routes.js";
 import Hello from "./hello.js";
 import session from "express-session";
+import "dotenv/config.js";
 // import mongodb from "mongoose";
 // import Hello from './hello';
 //mongodb.connect("mongodb://localhost:27017/project");
@@ -26,7 +27,7 @@ mongoose
   });
 
 const app = express();
-app.use(express.json()); // for parsing application/json
+
 app.use(
   cors({
     credentials: true, //    cookie
@@ -46,6 +47,7 @@ if (process.env.NODE_ENV !== "development") {
   };
 }
 app.use(session(sessionOptions));
+app.use(express.json()); // for parsing application/json
 
 Hello(app);
 userRoutes(app);
