@@ -1,7 +1,7 @@
 import model from "./model.js";
 
 export const findAllUsersDao = () => model.find();
-export const findUserByIdDao = (user_id) => model.findById(user_id); // ({_id: id}) is same as (id)
+export const findUserByIdDao = (user_id) => model.findOne({ user_id: user_id }); // ({_id: id}) is same as (id)
 export const findUserByUserIdDao = (user_id) =>
   model.findOne({ user_id: user_id });
 export const findUserByCredentialsDao = (user_id, password) =>

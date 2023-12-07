@@ -11,7 +11,7 @@ function userRoutes(app) {
   //find single user by id
   const findUserbyId = async (req, res) => {
     const id = req.params.id;
-    const user = await dao.findUserByIdDao(id);
+    const user = await dao.findUserByIdDao(parseInt(id));
     res.json(user);
   };
   app.get("/project/users/:id", findUserbyId);
@@ -19,7 +19,7 @@ function userRoutes(app) {
   // deleting user
   const deleteUser = async (req, res) => {
     const { id } = req.params;
-    const status = await dao.deleteUserDao(id);
+    const status = await dao.deleteUserDao(parseInt(id));
     req.session.destroy();
     res.json(status); // returning the status of the delete operation
   };
@@ -42,13 +42,24 @@ function userRoutes(app) {
   const updateUser = async (req, res) => {
     const id = req.params.id;
     const newUser = req.body;
-    const user = await dao.updateSingleUserDao(id, newUser);
+    const user = await dao.updateSingleUserDao(parseInt(id), newUser);
     req.session["currentUser"] = user;
     res.json(user);
   };
   app.get("/a5/welcome", (req, res) => {
     res.send("Welcome to Assignment 5");
   });
+
+  const account = async (req, res) => {
+    // when signin, we can get the current user.
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(403);
+      return;
+    }
+    res.json(currentUser);
+  };
+  app.post("/project/users/account", account);
 
   /*   WIP: Apurva 
   1. signin

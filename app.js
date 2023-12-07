@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./user/routes.js";
-import oberveDetailRoute from "./observation/routes.js";
 import exploreRoutes from "./explore/routes.js";
 import Hello from "./hello.js";
 import session from "express-session";
@@ -51,6 +50,5 @@ app.use(session(sessionOptions));
 Hello(app);
 userRoutes(app);
 exploreRoutes(app);
-oberveDetailRoute(app);
 
 app.listen(4000);
