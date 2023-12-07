@@ -2,6 +2,7 @@ import * as dao from "./dao.js";
 
 function userRoutes(app) {
   // populating all user
+
   const findAllUser = async (req, res) => {
     const user = await dao.findAllUsersDao();
     res.json(user);
@@ -43,7 +44,7 @@ function userRoutes(app) {
     const id = req.params.id;
     const newUser = req.body;
     const user = await dao.updateSingleUserDao(parseInt(id), newUser);
-    req.session["currentUser"] = user;
+    // req.session["currentUser"] = user;
     res.json(user);
   };
   app.get("/a5/welcome", (req, res) => {
@@ -57,13 +58,7 @@ function userRoutes(app) {
   4. account 
 
   */
-  const account = async (req, res) => {
-    try {
-      res.json(req.session["currentUser"]);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
   const signup = async (req, res) => {
     try {
       const user = await dao.findUserByUserIdDao(req.body.user_id);
@@ -92,13 +87,25 @@ function userRoutes(app) {
     try {
       const { user_id, password } = req.body;
       const currentUser = await dao.findUserByCredentialsDao(user_id, password);
-      req.session["currentUser"] = currentUser;
-      res.json(currentUser);
+      if (currentUser) {
+        req.session["currentUser"] = currentUser;
+        res.json(currentUser);
+      } else {
+        res.sendStatus(403);
+      }
     } catch (e) {
       console.log(e);
     }
   };
-
+  const account = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    console.log(currentUser);
+    if (!currentUser) {
+      res.sendStatus(403);
+      return;
+    }
+    res.json(currentUser);
+  };
   const signout = (req, res) => {
     try {
       req.session.destroy();
@@ -107,10 +114,10 @@ function userRoutes(app) {
       console.log(e);
     }
   };
-  app.post("/api/users/signup", signup);
-  app.post("/api/users/signin", signin);
-  app.post("/api/users/signout", signout);
-  app.post("/api/users/account", account);
+  app.post("/project/users/signup", signup);
+  app.post("/project/users/signin", signin);
+  app.post("/project/users/signout", signout);
+  app.post("/project/users/account", account);
 }
 
 export default userRoutes;
