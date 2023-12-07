@@ -5,16 +5,16 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema(
   {
     user_id: { type: Number, unique: true, required: true },
+    user_login: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, unique: true, required: true },
-    name: { type: String },
-    role: {
+    user_name: { type: String },
+    user_role: {
       type: String,
-      enum: ["ADMIN", "USER", "MODERATOR"],
-      default: "USER",
+      enum: ["admin", "user", "moderator"],
+      default: "user",
     },
     created_at: { type: Date, default: Date.now },
-    nickname: { type: String },
     updated_at: { type: Date, default: Date.now },
     last_login: { type: Date, default: Date.now },
     logins_count: { type: Number, default: 0 },

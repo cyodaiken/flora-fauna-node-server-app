@@ -3,8 +3,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./user/routes.js";
 import exploreRoutes from "./explore/routes.js";
+import Hello from "./hello.js";
+import session from "express-session";
 // import mongodb from "mongoose";
-// mongodb.connect("mongodb://localhost:27017/project");
+// import Hello from './hello';
+//mongodb.connect("mongodb://localhost:27017/project");
 
 const FRONTEND_URL = "http://localhost:3000";
 const DB_CONNECTION_STRING =
@@ -23,31 +26,29 @@ mongoose
   });
 
 const app = express();
-
+app.use(express.json()); // for parsing application/json
 app.use(
   cors({
-    // credentials: true, //    cookie
-    // origin: FRONTEND_URL, // this needs to be replaced if we are deploying frontend and backend separately. set to localhost.
+    credentials: true, //    cookie
+    origin: FRONTEND_URL, // this needs to be replaced if we are deploying frontend and backend separately. set to localhost.
   })
 );
+const sessionOptions = {
+  secret: "any string",
+  resave: false,
+  saveUninitialized: false,
+};
+if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    sameSite: "none",
+    secure: true,
+  };
+}
+app.use(session(sessionOptions));
 
-// const sessionOptions = {
-//     secret: "any string",
-//     resave: false,
-//     saveUninitialized: false,
-//   };
-//   if (process.env.NODE_ENV !== "development") {
-//     sessionOptions.proxy = true;
-//     sessionOptions.cookie = {
-//       sameSite: "none",
-//       secure: true,
-//     };
-//   }
-
-//   app.use(session(sessionOptions));
-
-// app.use(express.json()); // for parsing application/json
+Hello(app);
 userRoutes(app);
 exploreRoutes(app);
 
-app.listen(400);
+app.listen(4000);

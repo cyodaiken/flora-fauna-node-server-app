@@ -20,6 +20,7 @@ function userRoutes(app) {
   const deleteUser = async (req, res) => {
     const { id } = req.params;
     const status = await dao.deleteUserDao(parseInt(id));
+    req.session.destroy();
     res.json(status); // returning the status of the delete operation
   };
   app.delete("/project/users/:id", deleteUser);
@@ -42,19 +43,12 @@ function userRoutes(app) {
     const id = req.params.id;
     const newUser = req.body;
     const user = await dao.updateSingleUserDao(parseInt(id), newUser);
+    req.session["currentUser"] = user;
     res.json(user);
   };
-
-  const account = async (req, res) => {
-    // when signin, we can get the current user.
-    const currentUser = req.session["currentUser"];
-    if (!currentUser) {
-      res.sendStatus(403);
-      return;
-    }
-    res.json(currentUser);
-  };
-  app.post("/project/users/account", account);
+  app.get("/a5/welcome", (req, res) => {
+    res.send("Welcome to Assignment 5");
+  });
 
   /*   WIP: Apurva 
   1. signin
@@ -63,6 +57,60 @@ function userRoutes(app) {
   4. account 
 
   */
+  const account = async (req, res) => {
+    try {
+      res.json(req.session["currentUser"]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const signup = async (req, res) => {
+    try {
+      const user = await dao.findUserByUserIdDao(req.body.user_id);
+      if (user) {
+        res.json(200);
+      }
+      const newUser = {
+        user_id: req.body.user_id,
+        password: req.body.password,
+        role: req.body.user_role,
+        user_name: req.body.user_name,
+        email: req.body.email,
+        user_login: req.body.user_login,
+        created_at: new Date().toString(),
+        ...req.body,
+      };
+      const currentUser = await dao.createUserDao(newUser);
+      req.session["currentUser"] = currentUser;
+      res.json(currentUser);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const signin = async (req, res) => {
+    try {
+      const { user_id, password } = req.body;
+      const currentUser = await dao.findUserByCredentialsDao(user_id, password);
+      req.session["currentUser"] = currentUser;
+      res.json(currentUser);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const signout = (req, res) => {
+    try {
+      req.session.destroy();
+      res.json(200);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  app.post("/api/users/signup", signup);
+  app.post("/api/users/signin", signin);
+  app.post("/api/users/signout", signout);
+  app.post("/api/users/account", account);
 }
 
 export default userRoutes;
