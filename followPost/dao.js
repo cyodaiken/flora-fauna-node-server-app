@@ -15,3 +15,5 @@ export const findFollowersByPostDao = (post_id) =>
 //find the posts that the user follows
 export const findPostThatUserFollowsDao = (user_id) =>
   model.find({ follower: user_id }).populate("followed"); // populate is query  using ID to get the post object.
+
+export const findObservationByIdDao = (id) => model.findOne({ id: id });
