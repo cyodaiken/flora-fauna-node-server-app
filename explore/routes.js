@@ -2,31 +2,6 @@ import Database from "../Database/index.js";
 import * as dao from "./dao.js";
 
 function exploreRoutes(app) {
-    // app.get("/project/explore", async (req, res) => {
-    //     const observations = Database.observations;
-    //     res.json(observations);
-    // });
-    // app.get("/project/explore/:id", async (req, res) => {
-    //     const id = parseInt(req.params.id, 10);
-    //     const observation = Database.observations.find((observation) => observation.id === id);
-    //     res.json(observation);
-    // });
-    // app.delete("/project/explore/:id", async (req, res) => {
-    //     const id = parseInt(req.params.id, 10);
-    //     const index = Database.observations.findIndex((observation)=> observation.id === id)
-    //     Database.observations.splice(index, 1);
-    //     res.json(204);
-    // });
-
-    // app.post("/project/explore", async (req, res) => {
-    //     const newObservation = {
-    //         id: new Date().getTime().toString(),
-    //         ...req.body,
-    //     };
-    //     Database.observations.unshift(newObservation);
-    //     res.json(newObservation);
-    // });
-
     const findAllObservations = async (req, res) => {
         const observations = await dao.findAllObservationsDao();
         res.json(observations);
@@ -35,6 +10,7 @@ function exploreRoutes(app) {
 
     const findObservationById = async (req, res) => {
         const id = parseInt(req.params.id, 10);
+        console.log(id);
         const observation = await dao.findObservationByIdDao(id);
         res.json(observation);
     }
