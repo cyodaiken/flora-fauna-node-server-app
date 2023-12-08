@@ -21,7 +21,7 @@ function userRoutes(app) {
   const deleteUser = async (req, res) => {
     const { id } = req.params;
     const status = await dao.deleteUserDao(parseInt(id));
-    req.session.destroy();
+    // req.session.destroy();
     res.json(status); // returning the status of the delete operation
   };
   app.delete("/project/users/:id", deleteUser);
@@ -89,7 +89,7 @@ function userRoutes(app) {
   const account = async (req, res) => {
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
-      res.sendStatus(403);
+      res.sendStatus(404);
       return;
     }
     res.json(currentUser);
