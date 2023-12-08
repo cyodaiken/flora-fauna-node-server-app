@@ -4,6 +4,7 @@ import cors from "cors";
 import userRoutes from "./user/routes.js";
 import exploreRoutes from "./explore/routes.js";
 import Hello from "./hello.js";
+import FollowsRoute from "./followPost/routes.js";
 import session from "express-session";
 import "dotenv/config.js";
 // import mongodb from "mongoose";
@@ -51,6 +52,7 @@ app.use(express.json()); // for parsing application/json
 
 Hello(app);
 userRoutes(app);
+FollowsRoute(app);
 exploreRoutes(app);
 
 app.listen(4000);
