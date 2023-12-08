@@ -40,17 +40,6 @@ function userRoutes(app) {
   };
   app.post("/project/users", createUser);
 
-  const updateUser = async (req, res) => {
-    const id = req.params.id;
-    const newUser = req.body;
-    const user = await dao.updateSingleUserDao(parseInt(id), newUser);
-    // req.session["currentUser"] = user;
-    res.json(user);
-  };
-  app.get("/a5/welcome", (req, res) => {
-    res.send("Welcome to Assignment 5");
-  });
-
   /*   WIP: Apurva 
   1. signin
   2. signup
@@ -99,7 +88,6 @@ function userRoutes(app) {
   };
   const account = async (req, res) => {
     const currentUser = req.session["currentUser"];
-    console.log(currentUser);
     if (!currentUser) {
       res.sendStatus(404);
       return;
@@ -114,10 +102,31 @@ function userRoutes(app) {
       console.log(e);
     }
   };
+  const updateUser = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const status = await dao.updateSingleUserDao(parseInt(userId), req.body);
+      const currentUser = await dao.findUserByUserIdDao(userId);
+      console.log(status);
+      console.log(currentUser);
+      if (status && currentUser) {
+        req.session["currentUser"] = currentUser;
+        res.json(currentUser);
+      } else {
+        res.json(403);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  app.get("/a5/welcome", (req, res) => {
+    res.send("Welcome to Assignment 5");
+  });
   app.post("/project/users/signup", signup);
   app.post("/project/users/signin", signin);
   app.post("/project/users/signout", signout);
   app.post("/project/users/account", account);
+  app.put("/project/users/:userId/edit", updateUser);
 }
 
 export default userRoutes;
