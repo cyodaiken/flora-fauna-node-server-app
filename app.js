@@ -54,5 +54,6 @@ Hello(app);
 userRoutes(app);
 FollowsRoute(app);
 exploreRoutes(app);
+userFollows(app);
 
 app.listen(4000);
