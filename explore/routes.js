@@ -36,9 +36,9 @@ function exploreRoutes(app) {
   const updateObservation = async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const newObservation = req.body;
-    const observation = await dao.updateSingleObservationDao(
+    const observation = await dao.updateObservationDao(
       id,
-      newObservation
+      req.body
     );
     res.json(observation);
   };
