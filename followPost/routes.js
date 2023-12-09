@@ -35,7 +35,9 @@ function FollowsRoute(app) {
 
   // find all the posts that 1 users follows
   const findPostThatUserFollows = async (req, res) => {
-    const followed = await userdao.findUserByUserIdDao(parseInt(user_id));
+    const id = req.params.userid;
+    const followed = await userdao.findUserByUserIdDao(parseInt(id));
+
     const user_id = followed._id;
     const postsFollowedByUser = await dao.findPostThatUserFollowsDao(user_id);
     res.json(postsFollowedByUser);
