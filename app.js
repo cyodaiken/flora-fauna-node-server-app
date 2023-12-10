@@ -5,6 +5,7 @@ import userRoutes from "./user/routes.js";
 import exploreRoutes from "./explore/routes.js";
 import Hello from "./hello.js";
 import FollowsRoute from "./followPost/routes.js";
+import LikeDislikeRoute from "./likeDislike/routes.js";
 import session from "express-session";
 import "dotenv/config.js";
 // import mongodb from "mongoose";
@@ -54,5 +55,5 @@ Hello(app);
 userRoutes(app);
 FollowsRoute(app);
 exploreRoutes(app);
-
+LikeDislikeRoute(app);
 app.listen(4000);
