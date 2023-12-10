@@ -2,6 +2,7 @@ import * as dao from "./dao.js";
 import * as userdao from "../user/dao.js";
 
 function userFollows(app) {
+    
     const userFollowUser = async (req, res) => {
         const follower = req.session["currentUser"]._id;
         const followed = await userdao.findUserByIdDao(
@@ -12,7 +13,7 @@ function userFollows(app) {
     };
 
     const userUnfollowUser = async (req, res) => {
-        const follower = res.session["currentUser"]._id;
+        const follower = req.session["currentUser"]._id;
         const followed = await userdao.findUserByIdDao(
             parseInt(req.params.userid)
         );
@@ -23,7 +24,7 @@ function userFollows(app) {
     // Return followers of this user 
     const findUsersThatFollowUser = async(req, res) => {
         const followed = await userdao.findUserByIdDao(
-            parseInt(req.params.postid)
+            parseInt(req.params.userid)
         );
         const followers = await dao.findUsersThatFollowUserDao(followed._id);
         res.json(followers)
@@ -32,16 +33,16 @@ function userFollows(app) {
     // Return users this user follows 
     const findUsersThatUserFollows = async(req, res) => {
         const id = req.params.userid;
-        const followed = await userdao.findUserByUserIdDao(parseInt(id));
+        const follower = await userdao.findUserByUserIdDao(parseInt(id));
 
-        const follows = await dao.findUsersThatUserFollowsDao(user_id);
+        const follows = await dao.findUsersThatUserFollowsDao(follower._id);
         res.json(follows)
     };
 
-    app.post("/project/follows/:userid", userFollowUser);
-    app.delete("/project/unfollows/:userid", userUnfollowUser);
-    app.get("/project/followers/:userid", findUsersThatFollowUser);
-    app.get("/project/following/:userid", findUsersThatFollowUser);
+    app.post("/follow/users/follow/:userid", userFollowUser);
+    app.delete("/follow/users/unfollow/:userid", userUnfollowUser);
+    app.get("/follow/users/followed/:userid", findUsersThatFollowUser);
+    app.get("/follow/users/following/:userid", findUsersThatUserFollows);
 
 }
 

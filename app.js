@@ -7,6 +7,7 @@ import Hello from "./hello.js";
 import FollowsRoute from "./followPost/routes.js";
 import session from "express-session";
 import "dotenv/config.js";
+import userFollows from "./followUser/routes.js";
 // import mongodb from "mongoose";
 // import Hello from './hello';
 //mongodb.connect("mongodb://localhost:27017/project");
