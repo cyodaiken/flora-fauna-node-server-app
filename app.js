@@ -8,6 +8,7 @@ import FollowsRoute from "./followPost/routes.js";
 import LikeDislikeRoute from "./likeDislike/routes.js";
 import session from "express-session";
 import "dotenv/config.js";
+import userFollows from "./followUser/routes.js";
 // import mongodb from "mongoose";
 // import Hello from './hello';
 //mongodb.connect("mongodb://localhost:27017/project");
@@ -55,5 +56,8 @@ Hello(app);
 userRoutes(app);
 FollowsRoute(app);
 exploreRoutes(app);
+userFollows(app);
+
 LikeDislikeRoute(app);
+
 app.listen(4000);
