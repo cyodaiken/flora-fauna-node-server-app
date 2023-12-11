@@ -13,7 +13,8 @@ import userFollows from "./followUser/routes.js";
 // import Hello from './hello';
 //mongodb.connect("mongodb://localhost:27017/project");
 
-const FRONTEND_URL = "http://localhost:3000";
+// const FRONTEND_URL = "http://localhost:3000";
+const FRONTEND_URL = "https://fluffy-blini-c4e220.netlify.app";
 const DB_CONNECTION_STRING =
   "mongodb+srv://user-jae:jae123@cluster-myecologist.vnj6wrp.mongodb.net/flora-fauna?retryWrites=true&w=majority";
 
