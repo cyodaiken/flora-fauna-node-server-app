@@ -9,9 +9,9 @@ function LikeDislikeRoute(app) {
       //get observation id
       const post_id = parseInt(req.params.post_id, 10);
       const obs = await postdao.findObservationByIdDao(post_id);
-      const user = req.session["currentUser"]._id;
-      const response = await dao.findLikeByUserForPostDao(user._id, post_id);
-      res.json(response);
+      //const user = req.session["currentUser"]._id;
+      //const response = await dao.findLikeByUserForPostDao(user._id, post_id);
+      //res.json(response);
     } catch (err) {
       console.log("ERROR HERE :: ");
       console.log(err.message);
@@ -54,6 +54,42 @@ function LikeDislikeRoute(app) {
   app.post(
     "/project/explore/:post_id/likedislike/:user_id/:like",
     manageLikeDislikeForPost
+  );
+  const getLikeDislikeCountForPost = async (req, res) => {
+    try {
+      console.log("IN NEW FUNCTION ::V");
+      const post_id = parseInt(req.params.post_id, 10);
+      const obs = await postdao.findObservationByIdDao(post_id);
+      console.log("IN NEW FUNCTION :: ", obs);
+
+      const user_id = parseInt(req.params.user_id, 10);
+      const user = await userdao.findUserByIdDao(user_id);
+      console.log(user);
+
+      const response = await dao.getLikeDislikeCountForPost(obs._id);
+      console.log("THIS IS IT :: ", response);
+
+      if (response.length === 0) {
+        res.json({ like: 0, dislike: 0, userLikeStatus: null });
+      } else {
+        const likeCount = response.filter((item) => item.like === true).length;
+        const dislikeCount = response.filter(
+          (item) => item.like === false
+        ).length;
+        const userLikeStatus = response.find((item) =>
+          item.user.equals(user._id)
+        )?.like;
+        res.json({ like: likeCount, dislike: dislikeCount, userLikeStatus });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
+  app.get(
+    "/project/explore/:post_id/likedislike/:user_id/count",
+    getLikeDislikeCountForPost
   );
 }
 export default LikeDislikeRoute;
